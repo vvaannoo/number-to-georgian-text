@@ -1,6 +1,6 @@
 {
   "name": "number-to-georgian-text",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This package is for converting numbers to Georgian text.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
