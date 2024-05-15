@@ -1,0 +1,2 @@
+export { numberToText } from "./converter";
+
