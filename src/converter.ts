@@ -35,20 +35,47 @@ const names: { [key: number]: string } = {
 };
 
 const magnitudes: { [key: string]: [number, number] } = {
-  'ათას': [1000, 1000000],
-  'მილიონ': [1000000, 1000000000],
-  'მილიარდ': [1000000000, 1000000000000],
-  'ტრილიონ': [1000000000000, 1000000000000000],
-  'კვადრილიონ': [1000000000000000, Number.MAX_SAFE_INTEGER + 1]
-}
+  ათას: [1000, 1000000],
+  მილიონ: [1000000, 1000000000],
+  მილიარდ: [1000000000, 1000000000000],
+  ტრილიონ: [1000000000000, 1000000000000000],
+  კვადრილიონ: [1000000000000000, Number.MAX_SAFE_INTEGER + 1],
+};
+
+const fractionalNames: { [key: number]: string } = {
+  1: "მეათედი",
+  2: "მეასედი",
+  3: "მეათასედი",
+  4: "მეათიათასედი",
+  5: "მეასიათასედი",
+  6: "მემილიონედი",
+  7: "მეათიმილიონედი",
+  8: "მეასიმილიონედი",
+  9: "მემილიარდედი",
+  10: "მეათიმილიარდედი",
+  11: "მეასიმილიარდედი",
+  12: "მეტრილიონედი",
+  13: "მეათიტრილიონედი",
+  14: "მეასიტრილიონედი",
+  15: "მეკვადრილიონედი",
+  16: "მეათიკვადრილიონედი",
+};
+
 export type Input = string | number;
 export type Options = {
-  // todo: add option for leading one (ერთი ათას, ერთი მილიონ...)
-}
+  leadingOne?: boolean;
+  decimalPointSeparator?: string;
+};
+
+const defaultOptions: Options = {
+  leadingOne: true,
+  decimalPointSeparator: "",
+};
 
 export function numberToText(input: Input, options?: Options): string {
   options = options || {};
-  console.log(input, options);
+  options = { ...defaultOptions, ...options };
+  // console.log(input, options);
   if (typeof input === "string") {
     input = +input;
   }
@@ -56,12 +83,19 @@ export function numberToText(input: Input, options?: Options): string {
     throw new Error("Invalid input");
   }
   if (input < 0) {
-    return "მინუს " + _generateText(-input);
+    return "მინუს " + numberToText(-input, options);
   }
-  return _generateText(input);
+  if (!Number.isInteger(input)) {
+    const [whole, fractional] = input.toString().split(".");
+    return (
+      `${_generateText(+whole, options)} მთელი${options.decimalPointSeparator} ` +
+      `${_generateText(+fractional, options)} ${getFractionalName(fractional)}`
+    );
+  }
+  return _generateText(input, options);
 }
 
-function _generateText(input: number): string {
+function _generateText(input: number, opts: Options): string {
   if (input < 20) {
     return names[input];
   }
@@ -69,26 +103,35 @@ function _generateText(input: number): string {
     if (input % 20 === 0) {
       return names[input] + "ი";
     }
-    return names[20 * Math.floor(input / 20)] + "და" + _generateText(input % 20);
+    return names[20 * Math.floor(input / 20)] + "და" + _generateText(input % 20, opts);
   }
   if (input < 1_000) {
     if (input % 100 === 0) {
       return names[input] + "ი";
     }
-    return names[100 * Math.floor(input / 100)] + " " + _generateText(input % 100);
+    return names[100 * Math.floor(input / 100)] + " " + _generateText(input % 100, opts);
   }
 
   for (const [name, [base, magnitude]] of Object.entries(magnitudes)) {
     if (input < magnitude) {
       const remainder = input % base;
-      if (remainder === 0) {
-        return _generateText(Math.floor(input / base)) + ` ${name}ი`;
+      const quotient = Math.floor(input / base);
+      let prefix = "";
+      if (quotient > 1 || opts.leadingOne) {
+        prefix = _generateText(quotient, opts) + " ";
       }
-      return _generateText(Math.floor(input / base)) + ` ${name} ` + _generateText(remainder);
+      if (remainder === 0) {
+        return `${prefix}${name}ი`;
+      }
+      return `${prefix}${name} ` + _generateText(remainder, opts);
     }
   }
   return input.toString();
 }
 
-// todo: add decimal support
+export function getFractionalName(input: string): string {
+  const len = input.length;
+  return fractionalNames[len] || "";
+}
+
 // todo: add ordinal support

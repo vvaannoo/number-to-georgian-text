@@ -1,2 +1,1 @@
-export { numberToText } from "./converter";
-
+export { numberToText, Options, Input } from "./converter";
