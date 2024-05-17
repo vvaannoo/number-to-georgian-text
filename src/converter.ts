@@ -1,4 +1,4 @@
-const names: { [key: number]: string } = {
+export const names: { [key: number]: string } = {
   0: "ნული",
   1: "ერთი",
   2: "ორი",
@@ -34,7 +34,7 @@ const names: { [key: number]: string } = {
   900: "ცხრაას",
 };
 
-const magnitudes: { [key: string]: [number, number] } = {
+export const magnitudes: { [key: string]: [number, number] } = {
   ათას: [1000, 1000000],
   მილიონ: [1000000, 1000000000],
   მილიარდ: [1000000000, 1000000000000],
