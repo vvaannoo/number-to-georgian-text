@@ -164,6 +164,13 @@ describe("Convertor Tests", () => {
     ])(`when the input is %s {sep: ','}`, (input, expected) => {
       expect(numberToText(input, { leadingOne: true, decimalPointSeparator: "," })).toBe(expected);
     });
+
+    test.each([
+      [-1.1, "მინუს ერთი მთელი და ერთი მეათედი"],
+      [5.002, "ხუთი მთელი და ორი მეათასედი"],
+    ])(`when the input is %s {sep: ' და'}`, (input, expected) => {
+      expect(numberToText(input, { leadingOne: true, decimalPointSeparator: " და" })).toBe(expected);
+    });
   });
 
   test("should fail when the input is not a number", () => {

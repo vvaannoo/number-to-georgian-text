@@ -14,7 +14,8 @@ yarn add number-to-georgian-text
 ```
 
 ## Usage
-    
+
+### To Text
 ```typescript
 import { numberToText } from 'number-to-georgian-text';
 
@@ -30,6 +31,32 @@ console.log(numberToText(100.01));
 // ასი მთელი ერთი მეასედი
 console.log(numberToText(100.01, {decimalPointSeparator: ','}));
 // ასი მთელი, ერთი მეასედი
+console.log(numberToText(100.01, {decimalPointSeparator: ' და'}));
+// ასი მთელი და ერთი მეასედი
+```
+
+### To Ordinal
+```typescript
+import { numberToOrdinal } from 'number-to-georgian-text';
+
+console.log(numberToOrdinal(1));
+// 1-ელი
+console.log(numberToOrdinal(2));
+// მე-2
+console.log(numberToOrdinal(1005));
+// 1005-ე
+```
+
+### To Ordinal Text
+```typescript
+import { numberToOrdinalText } from 'number-to-georgian-text';
+
+console.log(numberToOrdinalText(1));
+// პირველი
+console.log(numberToOrdinalText(2));
+// მეორე
+console.log(numberToOrdinalText(1005));
+// ათას მეხუთე
 ```
 
 ## Options
