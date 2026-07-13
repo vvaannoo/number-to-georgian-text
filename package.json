@@ -1,6 +1,6 @@
 {
   "name": "number-to-georgian-text",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "This package is for converting numbers to Georgian text.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -12,7 +12,9 @@
     "build": "tsup",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix"
   },
   "repository": {
     "type": "git",
