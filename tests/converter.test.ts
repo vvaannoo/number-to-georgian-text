@@ -169,7 +169,9 @@ describe("Convertor Tests", () => {
       [-1.1, "მინუს ერთი მთელი და ერთი მეათედი"],
       [5.002, "ხუთი მთელი და ორი მეათასედი"],
     ])(`when the input is %s {sep: ' და'}`, (input, expected) => {
-      expect(numberToText(input, { leadingOne: true, decimalPointSeparator: " და" })).toBe(expected);
+      expect(numberToText(input, { leadingOne: true, decimalPointSeparator: " და" })).toBe(
+        expected,
+      );
     });
   });
 
